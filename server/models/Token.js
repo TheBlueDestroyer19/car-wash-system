@@ -2,13 +2,8 @@ const mongoose = require('mongoose');
 
 const tokenSchema = new mongoose.Schema(
   {
-    // Token number resets every day
     tokenNumber: {
       type: Number,
-      required: true
-    },
-    date: {
-      type: String, // 'YYYY-MM-DD'
       required: true
     },
     customerName: {
@@ -16,11 +11,6 @@ const tokenSchema = new mongoose.Schema(
     },
     vehicleNumber: {
       type: String
-    },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: null
     },
     status: {
       type: String,
@@ -31,9 +21,10 @@ const tokenSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    createdAt: {
-      type: Date,
-      default: Date.now
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
     },
     startedAt: {
       type: Date
@@ -46,8 +37,5 @@ const tokenSchema = new mongoose.Schema(
     timestamps: true
   }
 );
-
-// Make tokenNumber + date unique per day
-tokenSchema.index({ date: 1, tokenNumber: 1 }, { unique: true });
 
 module.exports = mongoose.model('Token', tokenSchema);
