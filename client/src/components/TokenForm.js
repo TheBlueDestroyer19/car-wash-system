@@ -1,117 +1,140 @@
-import React, { useState } from 'react';
-import './TokenForm.css';
+import React from "react";
+import "./TokenForm.css";
 
-function TokenForm({ shop, token, onSuccess, onBack }) {
-  const [customerName, setCustomerName] = useState('');
-  const [vehicleNumber, setVehicleNumber] = useState('');
-  const [creating, setCreating] = useState(false);
-  const [error, setError] = useState('');
+class TokenForm extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleSubmit = async (e) => {
+    this.state = {
+      customerName: "",
+      vehicleNumber: "",
+      creating: false,
+      error: ""
+    };
+  }
+
+  handleSubmit = async (e) => {
     e.preventDefault();
-    setCreating(true);
-    setError('');
+    this.setState({ creating: true, error: "" });
+
+    const { shop, onSuccess } = this.props;
 
     try {
-      const authToken = localStorage.getItem('authToken');
-      const headers = { 'Content-Type': 'application/json' };
+      const authToken = localStorage.getItem("authToken");
+      const headers = { "Content-Type": "application/json" };
+
       if (authToken) {
-        headers['Authorization'] = `Bearer ${authToken}`;
+        headers["Authorization"] = `Bearer ${authToken}`;
       }
 
-      const res = await fetch('/api/tokens', {
-        method: 'POST',
+      const res = await fetch("/api/tokens", {
+        method: "POST",
         headers,
         body: JSON.stringify({
-          customerName,
-          vehicleNumber,
+          customerName: this.state.customerName,
+          vehicleNumber: this.state.vehicleNumber,
           shopId: shop._id
         })
       });
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to create token');
+        throw new Error(errorData.message || "Failed to create token");
       }
 
       const newToken = await res.json();
-      setCustomerName('');
-      setVehicleNumber('');
+
+      this.setState({
+        customerName: "",
+        vehicleNumber: ""
+      });
+
       onSuccess(newToken);
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Could not create token');
+      this.setState({
+        error: err.message || "Could not create token"
+      });
     } finally {
-      setCreating(false);
+      this.setState({ creating: false });
     }
   };
 
-  return (
-    <div className="token-form-container ui-page fade-in">
-      <div className="token-form-card ui-elevated ui-scale-in">
-        
-        {/* HEADER */}
-        <div className="token-form-header">
-          <h2 className="token-title">
-            Get Token for {shop.name}
-          </h2>
+  handleInput = (field, value) => {
+    this.setState({ [field]: value });
+  };
 
-          <button
-            onClick={onBack}
-            className="back-button ui-hover-scale"
-          >
-            ← Back to Centers
-          </button>
-        </div>
+  render() {
+    const { shop, onBack } = this.props;
+    const { customerName, vehicleNumber, creating, error } = this.state;
 
-        {/* SHOP INFO */}
-        <p className="shop-info subtle-text">
-          📍 {shop.address}
-        </p>
+    return (
+      <div className="token-form-container ui-page fade-in">
+        <div className="token-form-card ui-elevated ui-scale-in">
 
-        {/* FORM */}
-        <form onSubmit={handleSubmit} className="token-form ui-section">
-          
-          <div className="form-group">
-            <label>Customer Name</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              required
-            />
+          {/* HEADER */}
+          <div className="token-form-header">
+            <h2 className="token-title">
+              Get Token for {shop.name}
+            </h2>
+
+            <button
+              onClick={onBack}
+              className="back-button ui-hover-scale"
+            >
+              ← Back to Centers
+            </button>
           </div>
 
-          <div className="form-group">
-            <label>Vehicle Number Plate</label>
-            <input
-              type="text"
-              placeholder="Enter vehicle number"
-              value={vehicleNumber}
-              onChange={(e) => setVehicleNumber(e.target.value)}
-              required
-            />
-          </div>
+          {/* SHOP INFO */}
+          <p className="shop-info subtle-text">
+            📍 {shop.address}
+          </p>
 
-          {error && (
-            <div className="error-message fade-in-slight">
-              {error}
+          {/* FORM */}
+          <form onSubmit={this.handleSubmit} className="token-form ui-section">
+            
+            <div className="form-group">
+              <label>Customer Name</label>
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={customerName}
+                onChange={(e) => this.handleInput("customerName", e.target.value)}
+                required
+              />
             </div>
-          )}
 
-          <button
-            type="submit"
-            disabled={creating}
-            className="submit-button ui-hover-lift"
-          >
-            {creating ? 'Creating Token...' : 'Get Token'}
-          </button>
-        </form>
+            <div className="form-group">
+              <label>Vehicle Number Plate</label>
+              <input
+                type="text"
+                placeholder="Enter vehicle number"
+                value={vehicleNumber}
+                onChange={(e) => this.handleInput("vehicleNumber", e.target.value)}
+                required
+              />
+            </div>
 
+            {error && (
+              <div className="error-message fade-in-slight">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={creating}
+              className="submit-button ui-hover-lift"
+            >
+              {creating ? "Creating Token..." : "Get Token"}
+            </button>
+          </form>
+
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default TokenForm;
