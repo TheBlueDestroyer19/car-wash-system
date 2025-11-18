@@ -1,0 +1,105 @@
+.orders-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.orders-page h2 {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.login-prompt {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  color: #856404;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.order-header h3 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.order-shop {
+  margin: 5px 0;
+  font-weight: 600;
+  color: #555;
+}
+
+.order-address {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-waiting {
+  background-color: #fffbea;
+  color: #f6c453;
+  border: 1px solid #f6c453;
+}
+
+.status-in-service {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #1890ff;
+}
+
+.status-completed {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #52c41a;
+}
+
+.status-cancelled {
+  background-color: #fff1f0;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+}
+
+.order-details {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.order-details p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.order-details strong {
+  color: #333;
+}
+

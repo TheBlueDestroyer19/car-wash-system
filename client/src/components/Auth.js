@@ -7,7 +7,9 @@ function Auth({ onLogin, onSignup, onClose }) {
     name: '',
     email: '',
     password: '',
-    adminSecret: ''
+    adminSecret: '',
+    shopName: '',
+    shopAddress: ''
   });
   const [role, setRole] = useState('customer');
   const [error, setError] = useState('');
@@ -26,7 +28,12 @@ function Auth({ onLogin, onSignup, onClose }) {
             name: formData.name,
             email: formData.email,
             password: formData.password,
-            ...(role === 'admin' && { role: 'admin', adminSecret: formData.adminSecret })
+            ...(role === 'admin' && {
+              role: 'admin',
+              adminSecret: formData.adminSecret,
+              shopName: formData.shopName,
+              shopAddress: formData.shopAddress
+            })
           };
 
       const res = await fetch(endpoint, {
@@ -48,7 +55,7 @@ function Auth({ onLogin, onSignup, onClose }) {
       }
 
       // Reset form
-      setFormData({ name: '', email: '', password: '', adminSecret: '' });
+      setFormData({ name: '', email: '', password: '', adminSecret: '', shopName: '', shopAddress: '' });
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -122,17 +129,41 @@ function Auth({ onLogin, onSignup, onClose }) {
               </div>
 
               {role === 'admin' && (
-                <div className="form-group">
-                  <label>Admin Secret</label>
-                  <input
-                    type="password"
-                    name="adminSecret"
-                    value={formData.adminSecret}
-                    onChange={handleChange}
-                    required={role === 'admin'}
-                    placeholder="Enter admin secret"
-                  />
-                </div>
+                <>
+                  <div className="form-group">
+                    <label>Admin Secret</label>
+                    <input
+                      type="password"
+                      name="adminSecret"
+                      value={formData.adminSecret}
+                      onChange={handleChange}
+                      required={role === 'admin'}
+                      placeholder="Enter admin secret"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Shop Name</label>
+                    <input
+                      type="text"
+                      name="shopName"
+                      value={formData.shopName}
+                      onChange={handleChange}
+                      required={role === 'admin'}
+                      placeholder="Enter your car wash center name"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Shop Address</label>
+                    <input
+                      type="text"
+                      name="shopAddress"
+                      value={formData.shopAddress}
+                      onChange={handleChange}
+                      required={role === 'admin'}
+                      placeholder="Enter your car wash center address"
+                    />
+                  </div>
+                </>
               )}
             </>
           )}
@@ -150,7 +181,7 @@ function Auth({ onLogin, onSignup, onClose }) {
             onClick={() => {
               setIsLogin(!isLogin);
               setError('');
-              setFormData({ name: '', email: '', password: '', adminSecret: '' });
+              setFormData({ name: '', email: '', password: '', adminSecret: '', shopName: '', shopAddress: '' });
             }}
             className="toggle-button"
           >

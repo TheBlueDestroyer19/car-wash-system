@@ -1,6 +1,27 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-exports.protect = (req, res, next) => {
+const buildUserContext = async (decoded) => {
+  let shop = decoded.shop || null;
+  if (!shop && decoded.role === 'admin') {
+    try {
+      const dbUser = await User.findById(decoded.id).select('shop');
+      if (dbUser && dbUser.shop) {
+        shop = dbUser.shop.toString();
+      }
+    } catch (err) {
+      console.error('Error fetching user shop for token context:', err.message);
+    }
+  }
+  return {
+    id: decoded.id,
+    role: decoded.role,
+    email: decoded.email,
+    shop
+  };
+};
+
+exports.protect = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'No token provided' });
@@ -15,7 +36,7 @@ exports.protect = (req, res, next) => {
       return res.status(500).json({ message: 'Server configuration error' });
     }
     const decoded = jwt.verify(token, secret);
-    req.user = { id: decoded.id, role: decoded.role, email: decoded.email };
+    req.user = await buildUserContext(decoded);
     next();
   } catch (err) {
     console.error('JWT verification error:', err.message);
@@ -30,7 +51,7 @@ exports.requireRole = (role) => (req, res, next) => {
 };
 
 // Optional auth - sets req.user if token is valid, but doesn't require it
-exports.optionalAuth = (req, res, next) => {
+exports.optionalAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return next(); // No token provided, continue without user
@@ -46,7 +67,7 @@ exports.optionalAuth = (req, res, next) => {
       return next();
     }
     const decoded = jwt.verify(token, secret);
-    req.user = { id: decoded.id, role: decoded.role, email: decoded.email };
+    req.user = await buildUserContext(decoded);
   } catch (err) {
     // Invalid token, but continue without user (for walk-in customers)
     req.user = null;
