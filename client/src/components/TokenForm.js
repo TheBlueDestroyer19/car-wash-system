@@ -47,14 +47,31 @@ function TokenForm({ shop, token, onSuccess, onBack }) {
   };
 
   return (
-    <div className="token-form-container">
-      <div className="token-form-card">
+    <div className="token-form-container ui-page fade-in">
+      <div className="token-form-card ui-elevated ui-scale-in">
+        
+        {/* HEADER */}
         <div className="token-form-header">
-          <h2>Get Token for {shop.name}</h2>
-          <button onClick={onBack} className="back-button">← Back to Centers</button>
+          <h2 className="token-title">
+            Get Token for {shop.name}
+          </h2>
+
+          <button
+            onClick={onBack}
+            className="back-button ui-hover-scale"
+          >
+            ← Back to Centers
+          </button>
         </div>
-        <p className="shop-info">📍 {shop.address}</p>
-        <form onSubmit={handleSubmit} className="token-form">
+
+        {/* SHOP INFO */}
+        <p className="shop-info subtle-text">
+          📍 {shop.address}
+        </p>
+
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="token-form ui-section">
+          
           <div className="form-group">
             <label>Customer Name</label>
             <input
@@ -65,6 +82,7 @@ function TokenForm({ shop, token, onSuccess, onBack }) {
               required
             />
           </div>
+
           <div className="form-group">
             <label>Vehicle Number Plate</label>
             <input
@@ -75,15 +93,25 @@ function TokenForm({ shop, token, onSuccess, onBack }) {
               required
             />
           </div>
-          {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={creating} className="submit-button">
+
+          {error && (
+            <div className="error-message fade-in-slight">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={creating}
+            className="submit-button ui-hover-lift"
+          >
             {creating ? 'Creating Token...' : 'Get Token'}
           </button>
         </form>
+
       </div>
     </div>
   );
 }
 
 export default TokenForm;
-

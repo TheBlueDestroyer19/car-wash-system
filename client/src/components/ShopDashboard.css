@@ -1,89 +1,147 @@
+/* =========================================================
+   PAGE LAYOUT
+========================================================= */
 .shop-dashboard {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;                      /* <<< More breathing room */
 }
 
-.shop-dashboard h2 {
+.page-title {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--brown);
 }
 
-.shops-grid {
+/* =========================================================
+   GRID LAYOUT (Spacing Fixed)
+========================================================= */
+.lux-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+  gap: 40px 36px;                     /* <<< PERFECT spacing:
+                                         40px vertical, 36px horizontal */
+  
+  padding-bottom: 30px;
 }
 
-.shop-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+/* =========================================================
+   TALL PHONE-SCREEN STYLE PREMIUM CARD
+========================================================= */
+.lux-vertical-card {
+  width: 100%;
+  max-width: 340px;                   /* <<< Prevent cards from stretching too wide */
+  height: 470px;                      /* <<< Slightly taller, more elegance */
+
+  margin: 0 auto;                     /* <<< Centers each card in its grid column */
+
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 252, 247, 0.94),
+    rgba(240, 233, 223, 0.82)
+  );
+  backdrop-filter: blur(14px);
+
+  padding: 32px 26px;
+  border-radius: 28px;
+
+  border: 1px solid rgba(169, 130, 105, 0.25);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+
   display: flex;
   flex-direction: column;
-}
-
-.shop-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.shop-card-header {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
+  text-align: center;
 
-.shop-card-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.3em;
-}
-
-.waiting-badge {
-  background-color: #ff9800;
-  color: white;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.9em;
-  font-weight: 600;
-}
-
-.shop-card-body {
-  flex: 1;
-  margin-bottom: 15px;
-}
-
-.shop-address {
-  color: #666;
-  margin: 0;
-  font-size: 0.95em;
-  line-height: 1.5;
-}
-
-.shop-card-footer {
-  margin-top: auto;
-}
-
-.select-shop-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.35s ease;
+
+  animation: fadeUp 0.65s ease both;
 }
 
-.select-shop-button:hover {
-  background-color: #45a049;
+.lux-vertical-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent);
 }
 
+/* =========================================================
+   CARD TITLE
+========================================================= */
+.lux-card-title {
+  margin-top: 8px;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--brown);
+}
+
+/* =========================================================
+   WAITING BADGE
+========================================================= */
+.lux-waiting {
+  display: inline-block;
+  margin: 18px auto;
+  background: var(--brown);
+  color: white;
+
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  box-shadow: 0 6px 18px rgba(92, 64, 51, 0.35);
+}
+
+/* =========================================================
+   ADDRESS TEXT
+========================================================= */
+.lux-address {
+  font-size: 1rem;
+  color: var(--brown-light);
+  margin: 0 0 22px 0;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   SELECT BUTTON
+========================================================= */
+.lux-select-btn {
+  width: 100%;
+  padding: 14px 0;
+
+  background: linear-gradient(to right, var(--brown), var(--brown-light));
+  color: white;
+
+  border: none;
+  border-radius: 18px;
+  font-size: 1.1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.35s ease;
+
+  box-shadow: 0 10px 20px rgba(92, 64, 51, 0.3);
+}
+
+.lux-select-btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(to right, var(--brown-light), var(--brown));
+  box-shadow: 0 14px 30px rgba(92, 64, 51, 0.45);
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,105 +1,199 @@
+/* =========================================================
+   PAGE STRUCTURE
+========================================================= */
 .orders-page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
+  color: var(--brown);
 }
 
 .orders-page h2 {
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.login-prompt {
-  background-color: #fff3cd;
-  border: 1px solid #ffc107;
-  border-radius: 4px;
-  padding: 20px;
+  margin-bottom: 32px;
+  font-size: 2rem;
+  font-weight: 700;
   text-align: center;
-  color: #856404;
 }
 
+/* =========================================================
+   ERROR & LOGIN PROMPT
+========================================================= */
+.login-prompt {
+  background-color: #fff7e0;
+  border: 1px solid #e4c87f;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   LIST SPACING
+========================================================= */
 .orders-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px; /* space between cards */
 }
 
+/* =========================================================
+   PREMIUM HORIZONTAL CARD
+========================================================= */
 .order-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+
+  width: 100%;
+  padding: 26px;
+
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 252, 247, 0.96),
+    rgba(244, 238, 230, 0.85)
+  );
+  backdrop-filter: blur(12px);
+
+  border-radius: 22px;
+  border: 1px solid rgba(169, 130, 105, 0.2);
+
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+
+  transition: 0.35s ease;
+  animation: fadeUp 0.6s ease both;
 }
 
+.order-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent);
+}
+
+/* =========================================================
+   LEFT SECTION: TITLE + SHOP + ADDRESS
+========================================================= */
 .order-header {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .order-header h3 {
-  margin: 0 0 5px 0;
-  color: #333;
+  margin: 0 0 6px 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--brown);
 }
 
 .order-shop {
-  margin: 5px 0;
+  margin: 0;
+  font-size: 1rem;
+  color: var(--brown-light);
   font-weight: 600;
-  color: #555;
 }
 
 .order-address {
-  margin: 5px 0;
-  color: #666;
-  font-size: 0.9em;
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: var(--brown-light);
 }
 
+/* =========================================================
+   RIGHT SECTION: STATUS BADGE
+========================================================= */
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: 600;
-  white-space: nowrap;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  align-self: flex-start;
+  margin-top: 10px;
+
+  border: 1px solid transparent;
 }
 
+/* Color Variants */
 .status-waiting {
-  background-color: #fffbea;
-  color: #f6c453;
-  border: 1px solid #f6c453;
+  background-color: var(--status-waiting-bg);
+  color: var(--status-waiting-border);
+  border-color: var(--status-waiting-border);
 }
 
 .status-in-service {
-  background-color: #e6f7ff;
-  color: #1890ff;
-  border: 1px solid #1890ff;
+  background-color: var(--status-inservice-bg);
+  color: var(--status-inservice-border);
+  border-color: var(--status-inservice-border);
 }
 
 .status-completed {
-  background-color: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #52c41a;
+  background-color: var(--status-completed-bg);
+  color: var(--status-completed-border);
+  border-color: var(--status-completed-border);
 }
 
 .status-cancelled {
-  background-color: #fff1f0;
-  color: #ff4d4f;
-  border: 1px solid #ff4d4f;
+  background-color: var(--status-cancelled-bg);
+  color: var(--status-cancelled-border);
+  border-color: var(--status-cancelled-border);
 }
 
+/* =========================================================
+   DETAILS SECTION
+========================================================= */
 .order-details {
-  border-top: 1px solid #eee;
-  padding-top: 15px;
+  flex: 1;
+  border-left: 2px solid rgba(169, 130, 105, 0.15);
+  padding-left: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .order-details p {
-  margin: 8px 0;
-  color: #666;
+  margin: 6px 0;
+  color: var(--brown-light);
+  font-size: 0.95rem;
 }
 
 .order-details strong {
-  color: #333;
+  color: var(--brown);
+  font-weight: 700;
 }
 
+/* =========================================================
+   ANIMATION
+========================================================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE FOR PHONES
+========================================================= */
+@media (max-width: 680px) {
+  .order-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .order-details {
+    border-left: none;
+    padding-left: 0;
+    border-top: 2px solid rgba(169, 130, 105, 0.15);
+    padding-top: 14px;
+  }
+
+  .status-badge {
+    align-self: flex-start;
+  }
+}

@@ -1,84 +1,210 @@
-.App {
-  font-family: Arial, sans-serif;
-  padding: 1rem;
+/* =========================================================
+   GLOBAL THEME VARIABLES
+========================================================= */
+:root {
+  --beige: #f5f1e8;
+  --beige-light: #faf7f2;
+  --brown: #5c4033;
+  --brown-light: #8d6e63;
+  --accent: #a98269;
+  --radius: 10px;
+  --transition: 0.25s ease;
+
+  /* Status tile colors */
+  --status-waiting-bg: #fdf7e8;
+  --status-waiting-border: #c19a33;
+
+  --status-inservice-bg: #f2f8fc;
+  --status-inservice-border: #5f85a4;
+
+  --status-completed-bg: #f4fbf1;
+  --status-completed-border: #62995b;
+
+  --status-cancelled-bg: #faeeec;
+  --status-cancelled-border: #b55b5e;
 }
 
-.app-header {
+/* =========================================================
+   GLOBAL APP WRAPPER
+========================================================= */
+.App {
+  font-family: "Inter", Arial, sans-serif;
+  padding: 1.2rem;
+  background: var(--beige-light);
+  color: var(--brown);
+}
+
+/* =========================================================
+   PREMIUM LUXURY NAVBAR
+========================================================= */
+
+.lux-navbar {
+  width: 92%;
+  margin: 22px auto 35px auto;
+  padding: 16px 28px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+
+  background: linear-gradient(
+    to bottom right,
+    #4b2f23,
+    #3b231b,
+    #2e1a14
+  );
+  border-radius: 20px;
+
+  box-shadow: 0 15px 38px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+
+  position: sticky;
+  top: 20px;
+  z-index: 100;
+
+  color: #fcebd3;
+  transition: 0.25s ease;
 }
 
-.app-header h1 {
+.lux-navbar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.lux-brand h1 {
   margin: 0;
-  text-align: left;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #ffe8c9;
+  letter-spacing: 0.6px;
 }
 
-.user-info {
+/* --- Navbar right section --- */
+.lux-nav-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
-  font-size: 14px;
-  color: #555;
-  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.lux-user {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* --- Beautiful nav links with underline animation --- */
+.lux-link {
+  background: none;
+  border: none;
+  color: #ffe8c9;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.lux-link::after {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: #ffe2b4;
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+.lux-link:hover::after,
+.lux-link.active::after {
+  width: 100%;
+}
+
+.lux-link:hover {
+  color: #ffffff;
+}
+
+/* --- Login / Logout Buttons --- */
+.lux-login,
+.lux-logout {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #c49a6c;
+  color: white;
+  box-shadow: 0 6px 15px rgba(196, 154, 108, 0.35);
+  transition: 0.25s ease;
+}
+
+.lux-login:hover,
+.lux-logout:hover {
+  background: #d8b586;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   HEADERS & BUTTONS (legacy controls kept for compatibility)
+========================================================= */
+
+.app-header {
+  display: none; /* NAVBAR REPLACED THIS */
 }
 
 .nav-button {
   padding: 8px 16px;
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background-color: var(--beige);
+  color: var(--brown);
+  border: 1px solid #d8cdc3;
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s;
+  transition: var(--transition);
 }
 
 .nav-button:hover {
-  background-color: #e0e0e0;
+  background-color: var(--beige-light);
+  border-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .nav-button.active {
-  background-color: #4CAF50;
+  background-color: var(--brown);
   color: white;
-  border-color: #4CAF50;
+  border-color: var(--brown);
+}
+
+.logout-button,
+.login-button {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
 }
 
 .logout-button {
-  padding: 8px 16px;
-  background-color: #f44336;
+  background: #b55b5e;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
 }
-
 .logout-button:hover {
-  background-color: #d32f2f;
+  background: #9e4d4f;
+  transform: translateY(-2px);
 }
 
 .login-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
+  background: var(--brown);
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
 }
-
 .login-button:hover {
-  background-color: #45a049;
+  background: var(--brown-light);
+  transform: translateY(-2px);
 }
 
-h1 {
-  text-align: center;
-}
+/* =========================================================
+   PAGE & DASHBOARD LAYOUT
+========================================================= */
 
 .dashboard {
   max-width: 1000px;
@@ -90,20 +216,50 @@ h1 {
   margin-bottom: 2rem;
 }
 
+/* =========================================================
+   INLINE TOKEN FORM (Admin Dashboard)
+========================================================= */
+
 .token-form {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.7rem;
   flex-wrap: wrap;
 }
 
 .token-form input {
-  padding: 0.5rem;
+  padding: 0.6rem;
   flex: 1 1 200px;
+  border: 1px solid #e3ded7;
+  border-radius: var(--radius);
+  background: var(--beige-light);
+  transition: var(--transition);
+}
+
+.token-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(169, 130, 105, 0.15);
 }
 
 .token-form button {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--brown);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
 }
+
+.token-form button:hover {
+  background: var(--brown-light);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   QUEUE TILES (Admin)
+========================================================= */
 
 .queue-grid {
   display: grid;
@@ -112,13 +268,20 @@ h1 {
 }
 
 .tile {
-  border-radius: 8px;
-  padding: 0.75rem;
-  color: #222;
-  background: #eee;
+  border-radius: var(--radius);
+  padding: 0.85rem;
+  background: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border-left: 6px solid transparent;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: var(--transition);
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
 }
 
 .tile-header {
@@ -126,6 +289,7 @@ h1 {
   justify-content: space-between;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  color: var(--brown);
 }
 
 .token-number {
@@ -134,59 +298,89 @@ h1 {
 
 .service-bay {
   font-size: 0.9rem;
+  color: var(--brown-light);
 }
 
 .status-label {
   font-weight: bold;
   margin-top: 0.5rem;
+  color: var(--brown);
 }
 
-/* Color codes */
+/* ===== Tile Status Colors ===== */
 .waiting {
-  background: #fffbea;
-  border-left: 5px solid #f6c453;
+  background: var(--status-waiting-bg);
+  border-left-color: var(--status-waiting-border);
 }
 
 .in-service {
-  background: #e6f7ff;
-  border-left: 5px solid #1890ff;
+  background: var(--status-inservice-bg);
+  border-left-color: var(--status-inservice-border);
 }
 
 .completed {
-  background: #f6ffed;
-  border-left: 5px solid #52c41a;
+  background: var(--status-completed-bg);
+  border-left-color: var(--status-completed-border);
 }
 
 .cancelled {
-  background: #fff1f0;
-  border-left: 5px solid #ff4d4f;
+  background: var(--status-cancelled-bg);
+  border-left-color: var(--status-cancelled-border);
 }
 
 .tile-actions button {
   margin-top: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.6rem;
   font-size: 0.85rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  transition: var(--transition);
 }
 
+.tile-actions button:hover {
+  background: var(--brown-light);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   FEEDBACK TEXT
+========================================================= */
+
 .error {
-  color: red;
+  color: #b23b3b;
 }
 .success {
-  color: green;
+  color: #62995b;
 }
+
+/* =========================================================
+   USER NOTE
+========================================================= */
 
 .user-note {
   font-size: 14px;
-  color: #666;
+  color: var(--brown-light);
   margin-bottom: 10px;
   font-style: italic;
 }
 
 .user-note a {
-  color: #4CAF50;
+  color: var(--brown);
   text-decoration: none;
+  transition: var(--transition);
 }
-
 .user-note a:hover {
   text-decoration: underline;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

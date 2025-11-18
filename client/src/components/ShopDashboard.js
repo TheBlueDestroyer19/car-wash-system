@@ -36,23 +36,27 @@ function ShopDashboard({ onSelectShop }) {
 
   return (
     <div className="shop-dashboard">
-      <h2>Select a Car Wash Center</h2>
+      <h2 className="page-title">Choose Your Car Wash Center</h2>
+
       {shops.length === 0 ? (
         <p>No car wash centers available at the moment.</p>
       ) : (
-        <div className="shops-grid">
+        <div className="lux-card-grid">
           {shops.map((shop) => (
-            <div key={shop._id} className="shop-card" onClick={() => onSelectShop(shop)}>
-              <div className="shop-card-header">
-                <h3>{shop.name}</h3>
-                <span className="waiting-badge">{shop.waitingCount} waiting</span>
-              </div>
-              <div className="shop-card-body">
-                <p className="shop-address">📍 {shop.address}</p>
-              </div>
-              <div className="shop-card-footer">
-                <button className="select-shop-button">Select This Center</button>
-              </div>
+            <div
+              key={shop._id}
+              className="lux-vertical-card"
+              onClick={() => onSelectShop(shop)}
+            >
+              <h3 className="lux-card-title">{shop.name}</h3>
+
+              <span className="lux-waiting">{shop.waitingCount} waiting</span>
+
+              <p className="lux-address">📍 {shop.address}</p>
+
+              <button className="lux-select-btn">
+                Select Center
+              </button>
             </div>
           ))}
         </div>
@@ -62,4 +66,3 @@ function ShopDashboard({ onSelectShop }) {
 }
 
 export default ShopDashboard;
-

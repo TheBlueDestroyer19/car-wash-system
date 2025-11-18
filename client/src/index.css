@@ -1,13 +1,45 @@
+/* ===== Global App Theme ===== */
+:root {
+  --beige: #f5f1e8;
+  --beige-light: #faf7f2;
+  --brown: #5c4033;
+  --brown-light: #8d6e63;
+  --accent: #a98269;
+  --radius: 10px;
+  --transition: 0.25s ease;
+}
+
+/* ===== Body Reset + Theme Foundation ===== */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  padding: 0;
+  background: var(--beige-light);
+  color: var(--brown);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Optional: global link styling */
+a {
+  color: var(--brown);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Code Elements ===== */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: "JetBrains Mono", source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
+  background: var(--beige);
+  padding: 3px 6px;
+  border-radius: 6px;
+  color: var(--brown);
 }

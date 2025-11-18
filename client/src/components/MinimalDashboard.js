@@ -13,16 +13,16 @@ function MinimalDashboard({ token, user }) {
   const fetchQueue = async () => {
     try {
       setLoading(true);
-      // Admin should fetch their shop's tokens, customers don't use this
+
       if (user && user.role === 'admin' && user.shop) {
         const res = await fetch(`/api/queue?shopId=${user.shop}`);
         if (!res.ok) throw new Error('Failed to fetch queue');
         const data = await res.json();
         setQueue(data);
       } else {
-        // This shouldn't be shown for customers, but handle gracefully
         setQueue([]);
       }
+
       setLoading(false);
     } catch (err) {
       console.error('Error fetching queue:', err);
@@ -46,9 +46,7 @@ function MinimalDashboard({ token, user }) {
 
     try {
       const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
+      if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const res = await fetch('/api/tokens', {
         method: 'POST',
@@ -76,9 +74,7 @@ function MinimalDashboard({ token, user }) {
     try {
       setError('');
       const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
+      if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const res = await fetch(`/api/tokens/${id}/status`, {
         method: 'PATCH',
@@ -101,35 +97,47 @@ function MinimalDashboard({ token, user }) {
   const getStatusClass = (status) => {
     switch (status) {
       case 'WAITING':
-        return 'tile waiting';
+        return 'tile waiting ui-elevated';
       case 'IN_SERVICE':
-        return 'tile in-service';
+        return 'tile in-service ui-elevated';
       case 'COMPLETED':
-        return 'tile completed';
+        return 'tile completed ui-elevated';
       case 'CANCELLED':
-        return 'tile cancelled';
+        return 'tile cancelled ui-elevated';
       default:
-        return 'tile';
+        return 'tile ui-elevated';
     }
   };
 
   if (!user || user.role !== 'admin') {
-    return <div className="dashboard"><p>This page is for admins only.</p></div>;
+    return (
+      <div className="dashboard fade-in">
+        <p>This page is for admins only.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="dashboard">
-      <section className="queue-section">
-        <h2>My Shop&apos;s Queue</h2>
+    <div className="dashboard fade-in ui-page">
+      {/* PAGE HEADER */}
+      <section className="dashboard-header ui-section">
+        <h2 className="section-title">My Shop&apos;s Queue</h2>
+
         {user && (
-          <p className="user-note">
-            Managing: {user.name} - Shop ID: {user.shop}
+          <p className="user-note subtle-text">
+            Managing: <strong>{user.name}</strong>
+            <br />
+            Shop ID: {user.shop}
           </p>
         )}
-        {loading && <p>Loading queue...</p>}
-        {error && <p className="error">{error}</p>}
 
-        <div className="queue-grid">
+        {loading && <p className="loading-text">Loading queue...</p>}
+        {error && <p className="error">{error}</p>}
+      </section>
+
+      {/* QUEUE GRID */}
+      <section className="queue-section ui-section">
+        <div className="queue-grid fade-in-slow">
           {queue.map((token) => (
             <div key={token._id} className={getStatusClass(token.status)}>
               <div className="tile-header">
@@ -140,21 +148,29 @@ function MinimalDashboard({ token, user }) {
                   <span className="service-bay">Bay {token.serviceBay}</span>
                 )}
               </div>
+
               <div className="tile-body">
                 <p>{token.customerName || 'Walk-in'}</p>
                 <p>{token.vehicleNumber || 'No vehicle info'}</p>
-                <p className="status-label">{token.status}</p>
+
+                <p className="status-label">
+                  {token.status}
+                </p>
               </div>
+
               <div className="tile-actions">
                 {token.status === 'WAITING' && (
                   <button
+                    className="action-button ui-hover-scale"
                     onClick={() => handleChangeStatus(token._id, 'IN_SERVICE')}
                   >
                     Start Service
                   </button>
                 )}
+
                 {token.status === 'IN_SERVICE' && (
                   <button
+                    className="action-button ui-hover-scale"
                     onClick={() => handleChangeStatus(token._id, 'COMPLETED')}
                   >
                     Mark Completed
@@ -163,8 +179,9 @@ function MinimalDashboard({ token, user }) {
               </div>
             </div>
           ))}
+
           {queue.length === 0 && !loading && (
-            <p>No active tokens for today.</p>
+            <p className="empty-text fade-in">No active tokens for today.</p>
           )}
         </div>
       </section>

@@ -43,19 +43,19 @@ function Auth({ onLogin, onSignup, onClose }) {
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Authentication failed');
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Authentication failed');
-      }
+      if (isLogin) onLogin(data.token, data.user);
+      else onSignup(data.token, data.user);
 
-      if (isLogin) {
-        onLogin(data.token, data.user);
-      } else {
-        onSignup(data.token, data.user);
-      }
-
-      // Reset form
-      setFormData({ name: '', email: '', password: '', adminSecret: '', shopName: '', shopAddress: '' });
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        adminSecret: '',
+        shopName: '',
+        shopAddress: ''
+      });
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -68,17 +68,30 @@ function Auth({ onLogin, onSignup, onClose }) {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-container fade-in">
+      <div className="auth-card ui-elevated ui-scale-in">
+        
+        {/* ===== Header ===== */}
         <div className="auth-header">
-          <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
+          <h2 className="auth-title">
+            {isLogin ? 'Welcome Back' : 'Create Account'}
+          </h2>
+
           {onClose && (
-            <button onClick={onClose} className="close-button" type="button">
+            <button
+              onClick={onClose}
+              className="close-button ui-hover-scale"
+              type="button"
+            >
               ×
             </button>
           )}
         </div>
-        <form onSubmit={handleSubmit}>
+
+        {/* ===== Form ===== */}
+        <form onSubmit={handleSubmit} className="auth-form">
+
+          {/* Name (Sign up only) */}
           {!isLogin && (
             <div className="form-group">
               <label>Name</label>
@@ -93,6 +106,7 @@ function Auth({ onLogin, onSignup, onClose }) {
             </div>
           )}
 
+          {/* Email */}
           <div className="form-group">
             <label>Email</label>
             <input
@@ -105,6 +119,7 @@ function Auth({ onLogin, onSignup, onClose }) {
             />
           </div>
 
+          {/* Password */}
           <div className="form-group">
             <label>Password</label>
             <input
@@ -118,18 +133,22 @@ function Auth({ onLogin, onSignup, onClose }) {
             />
           </div>
 
+          {/* Role + Admin extra fields */}
           {!isLogin && (
             <>
               <div className="form-group">
                 <label>Role</label>
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
                   <option value="customer">Customer</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
 
               {role === 'admin' && (
-                <>
+                <div className="admin-section fade-in-slight">
                   <div className="form-group">
                     <label>Admin Secret</label>
                     <input
@@ -141,6 +160,7 @@ function Auth({ onLogin, onSignup, onClose }) {
                       placeholder="Enter admin secret"
                     />
                   </div>
+
                   <div className="form-group">
                     <label>Shop Name</label>
                     <input
@@ -152,6 +172,7 @@ function Auth({ onLogin, onSignup, onClose }) {
                       placeholder="Enter your car wash center name"
                     />
                   </div>
+
                   <div className="form-group">
                     <label>Shop Address</label>
                     <input
@@ -160,28 +181,42 @@ function Auth({ onLogin, onSignup, onClose }) {
                       value={formData.shopAddress}
                       onChange={handleChange}
                       required={role === 'admin'}
-                      placeholder="Enter your car wash center address"
+                      placeholder="Enter your shop address"
                     />
                   </div>
-                </>
+                </div>
               )}
             </>
           )}
 
+          {/* Error Message */}
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" disabled={loading} className="auth-button">
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="auth-button ui-hover-lift"
+          >
             {loading ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>
 
+        {/* ===== Toggle Login/Signup ===== */}
         <div className="auth-toggle">
           <button
             type="button"
             onClick={() => {
               setIsLogin(!isLogin);
               setError('');
-              setFormData({ name: '', email: '', password: '', adminSecret: '', shopName: '', shopAddress: '' });
+              setFormData({
+                name: '',
+                email: '',
+                password: '',
+                adminSecret: '',
+                shopName: '',
+                shopAddress: ''
+              });
             }}
             className="toggle-button"
           >
@@ -196,4 +231,3 @@ function Auth({ onLogin, onSignup, onClose }) {
 }
 
 export default Auth;
-
