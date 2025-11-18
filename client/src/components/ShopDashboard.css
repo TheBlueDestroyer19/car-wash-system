@@ -58,6 +58,13 @@
   animation: fadeUp 0.65s ease both;
 }
 
+.lux-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
 .lux-vertical-card:hover {
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 28px 65px rgba(0, 0, 0, 0.2);
@@ -79,7 +86,7 @@
 ========================================================= */
 .lux-waiting {
   display: inline-block;
-  margin: 18px auto;
+  margin: 18px auto 0 auto;
   background: var(--brown);
   color: white;
 
@@ -89,6 +96,18 @@
   font-weight: 600;
 
   box-shadow: 0 6px 18px rgba(92, 64, 51, 0.35);
+}
+
+.lux-active-token {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--brown);
+  border: 1px dashed rgba(92, 64, 51, 0.3);
 }
 
 /* =========================================================
@@ -170,5 +189,9 @@
 
   .lux-waiting {
     margin: 14px auto;
+  }
+
+  .lux-badges {
+    gap: 10px;
   }
 }

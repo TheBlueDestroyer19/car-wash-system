@@ -15,12 +15,21 @@ exports.getAllShops = async (req, res) => {
           date: today,
           status: { $in: ['WAITING', 'IN_SERVICE'] }
         });
+        const activeToken = await Token.findOne({
+          shop: shop._id,
+          date: today,
+          status: 'IN_SERVICE'
+        })
+          .sort({ startedAt: 1, tokenNumber: 1 })
+          .select('tokenNumber')
+          .lean();
         return {
           _id: shop._id,
           name: shop.name,
           address: shop.address,
           manager: shop.manager,
           waitingCount,
+          currentInServiceToken: activeToken ? activeToken.tokenNumber : null,
           createdAt: shop.createdAt
         };
       })

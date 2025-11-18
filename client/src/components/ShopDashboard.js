@@ -75,7 +75,14 @@ class ShopDashboard extends React.Component {
               >
                 <h3 className="lux-card-title">{shop.name}</h3>
 
-                <span className="lux-waiting">{shop.waitingCount} waiting</span>
+                <div className="lux-badges">
+                  <span className="lux-waiting">{shop.waitingCount} waiting</span>
+                  <span className="lux-active-token">
+                    {shop.currentInServiceToken
+                      ? `Now serving #${shop.currentInServiceToken}`
+                      : 'Bay ready for next token'}
+                  </span>
+                </div>
 
                 <p className="lux-address">📍 {shop.address}</p>
 
