@@ -12,6 +12,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('shops');
   const [selectedShop, setSelectedShop] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('authToken');
@@ -30,12 +31,27 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
+
   const handleLogin = (authToken, authUser) => {
     setToken(authToken);
     setUser(authUser);
     localStorage.setItem('authToken', authToken);
     localStorage.setItem('authUser', JSON.stringify(authUser));
     setShowAuth(false);
+    closeMobileMenu();
 
     if (authUser.role === 'admin') setCurrentPage('admin');
     else setCurrentPage('shops');
@@ -47,6 +63,7 @@ function App() {
     localStorage.setItem('authToken', authToken);
     localStorage.setItem('authUser', JSON.stringify(authUser));
     setShowAuth(false);
+    closeMobileMenu();
 
     if (authUser.role === 'admin') setCurrentPage('admin');
     else setCurrentPage('shops');
@@ -59,6 +76,7 @@ function App() {
     setSelectedShop(null);
     localStorage.removeItem('authToken');
     localStorage.removeItem('authUser');
+    closeMobileMenu();
   };
 
   const handleSelectShop = (shop) => {
@@ -70,6 +88,62 @@ function App() {
     setCurrentPage('shops');
     setSelectedShop(null);
     alert(`Token #${newToken.tokenNumber} created successfully!`);
+  };
+
+  const openAuthModal = () => {
+    setShowAuth(true);
+    closeMobileMenu();
+  };
+
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    if (page !== 'tokenForm') setSelectedShop(null);
+    closeMobileMenu();
+  };
+
+  const renderNavButtons = (isMobile = false) => {
+    const linkClass = (page) =>
+      `${isMobile ? 'lux-link mobile' : 'lux-link'} ${
+        currentPage === page ? 'active' : ''
+      }`;
+
+    if (user) {
+      return (
+        <>
+          <span className={isMobile ? 'lux-user mobile' : 'lux-user'}>
+            {user.name} — <small>{user.role}</small>
+          </span>
+
+          {user.role === 'customer' && (
+            <>
+              <button
+                onClick={() => navigateTo('shops')}
+                className={linkClass('shops')}
+              >
+                Centers
+              </button>
+
+              <button
+                onClick={() => navigateTo('orders')}
+                className={linkClass('orders')}
+              >
+                My Orders
+              </button>
+            </>
+          )}
+
+          <button onClick={handleLogout} className="lux-logout">
+            Logout
+          </button>
+        </>
+      );
+    }
+
+    return (
+      <button onClick={openAuthModal} className="lux-login">
+        Login / Sign Up
+      </button>
+    );
   };
 
   const renderContent = () => {
@@ -117,45 +191,36 @@ function App() {
         </div>
 
         <div className="lux-nav-actions">
-          {user ? (
-            <>
-              <span className="lux-user">
-                {user.name} — <small>{user.role}</small>
-              </span>
-
-              {user.role === 'customer' && (
-                <>
-                  <button
-                    onClick={() => setCurrentPage('shops')}
-                    className={currentPage === 'shops' ? 'lux-link active' : 'lux-link'}
-                  >
-                    Centers
-                  </button>
-
-                  <button
-                    onClick={() => setCurrentPage('orders')}
-                    className={currentPage === 'orders' ? 'lux-link active' : 'lux-link'}
-                  >
-                    My Orders
-                  </button>
-                </>
-              )}
-
-              <button onClick={handleLogout} className="lux-logout">
-                Logout
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => setShowAuth(true)}
-              className="lux-login"
-            >
-              Login / Sign Up
-            </button>
-          )}
+          {renderNavButtons()}
         </div>
+
+        <button
+          className={`lux-burger ${isMobileMenuOpen ? 'open' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle navigation menu"
+        >
+          <span />
+        </button>
       </nav>
       {/* =========================================================== */}
+
+      <div
+        className={`lux-mobile-backdrop ${isMobileMenuOpen ? 'open' : ''}`}
+        onClick={closeMobileMenu}
+      />
+      <aside className={`lux-mobile-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="lux-drawer-header">
+          <h2>Menu</h2>
+          <button
+            className="lux-close-drawer"
+            onClick={closeMobileMenu}
+            aria-label="Close menu"
+          >
+            ×
+          </button>
+        </div>
+        <div className="lux-mobile-actions">{renderNavButtons(true)}</div>
+      </aside>
 
       {renderContent()}
     </div>

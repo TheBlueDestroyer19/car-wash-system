@@ -24,14 +24,33 @@
   --status-cancelled-border: #b55b5e;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--beige-light);
+}
+
 /* =========================================================
    GLOBAL APP WRAPPER
 ========================================================= */
 .App {
   font-family: "Inter", Arial, sans-serif;
-  padding: 1.2rem;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
   background: var(--beige-light);
   color: var(--brown);
+  min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* =========================================================
@@ -39,8 +58,9 @@
 ========================================================= */
 
 .lux-navbar {
-  width: 92%;
-  margin: 22px auto 35px auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 18px auto 30px auto;
   padding: 16px 28px;
 
   display: flex;
@@ -86,9 +106,65 @@
   gap: 18px;
 }
 
+.lux-burger {
+  display: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.lux-burger span,
+.lux-burger span::before,
+.lux-burger span::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ffe8c9;
+  border-radius: 999px;
+  transition: 0.25s ease;
+  position: relative;
+}
+
+.lux-burger span::before {
+  position: absolute;
+  top: -6px;
+}
+
+.lux-burger span::after {
+  position: absolute;
+  top: 6px;
+}
+
+.lux-burger.open span {
+  background: transparent;
+}
+
+.lux-burger.open span::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.lux-burger.open span::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
 .lux-user {
   font-size: 0.95rem;
   opacity: 0.9;
+}
+
+.lux-user.mobile {
+  width: 100%;
+  font-size: 1rem;
+  margin-bottom: 18px;
+  text-align: left;
+  opacity: 1;
 }
 
 /* --- Beautiful nav links with underline animation --- */
@@ -124,6 +200,17 @@
   color: #ffffff;
 }
 
+.lux-link.mobile {
+  width: 100%;
+  text-align: left;
+  font-size: 1.05rem;
+  padding: 10px 0;
+}
+
+.lux-link.mobile::after {
+  display: none;
+}
+
 /* --- Login / Logout Buttons --- */
 .lux-login,
 .lux-logout {
@@ -142,6 +229,87 @@
 .lux-logout:hover {
   background: #d8b586;
   transform: translateY(-2px);
+}
+
+.lux-mobile-actions .lux-login,
+.lux-mobile-actions .lux-logout {
+  width: 100%;
+  text-align: center;
+  margin-top: 6px;
+  padding: 12px;
+}
+
+.lux-mobile-actions .lux-link {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lux-mobile-actions .lux-link:last-of-type {
+  border-bottom: none;
+}
+
+.lux-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 5, 4, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 90;
+}
+
+.lux-mobile-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lux-mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: min(320px, 80vw);
+  height: 100vh;
+  background: #1d120d;
+  color: #ffe8c9;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.45);
+  padding: 28px 24px 32px;
+  transition: 0.35s ease;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lux-mobile-drawer.open {
+  right: 0;
+}
+
+.lux-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 14px;
+}
+
+.lux-drawer-header h2 {
+  font-size: 1.15rem;
+  margin: 0;
+  color: #ffe8c9;
+}
+
+.lux-close-drawer {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ffe8c9;
+  cursor: pointer;
+}
+
+.lux-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
 }
 
 /* =========================================================
@@ -383,4 +551,43 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1024px) {
+  .lux-navbar {
+    padding: 14px 20px;
+  }
+
+  .lux-nav-actions {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lux-navbar {
+    position: static;
+    border-radius: 16px;
+    padding: 14px 18px;
+    width: 100%;
+  }
+
+  .lux-nav-actions {
+    display: none;
+  }
+
+  .lux-burger {
+    display: inline-flex;
+  }
+
+  .lux-brand h1 {
+    font-size: 1.15rem;
+  }
+
+  .App {
+    padding: 0.75rem;
+  }
 }
