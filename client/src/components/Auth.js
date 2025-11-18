@@ -1,0 +1,168 @@
+import React, { useState } from 'react';
+import './Auth.css';
+
+function Auth({ onLogin, onSignup, onClose }) {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    adminSecret: ''
+  });
+  const [role, setRole] = useState('customer');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const body = isLogin
+        ? { email: formData.email, password: formData.password }
+        : {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            ...(role === 'admin' && { role: 'admin', adminSecret: formData.adminSecret })
+          };
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Authentication failed');
+      }
+
+      if (isLogin) {
+        onLogin(data.token, data.user);
+      } else {
+        onSignup(data.token, data.user);
+      }
+
+      // Reset form
+      setFormData({ name: '', email: '', password: '', adminSecret: '' });
+    } catch (err) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
+          {onClose && (
+            <button onClick={onClose} className="close-button" type="button">
+              ×
+            </button>
+          )}
+        </div>
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required={!isLogin}
+                placeholder="Enter your name"
+              />
+            </div>
+          )}
+
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="Enter your password"
+              minLength="6"
+            />
+          </div>
+
+          {!isLogin && (
+            <>
+              <div className="form-group">
+                <label>Role</label>
+                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                  <option value="customer">Customer</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              {role === 'admin' && (
+                <div className="form-group">
+                  <label>Admin Secret</label>
+                  <input
+                    type="password"
+                    name="adminSecret"
+                    value={formData.adminSecret}
+                    onChange={handleChange}
+                    required={role === 'admin'}
+                    placeholder="Enter admin secret"
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {error && <div className="error-message">{error}</div>}
+
+          <button type="submit" disabled={loading} className="auth-button">
+            {loading ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
+          </button>
+        </form>
+
+        <div className="auth-toggle">
+          <button
+            type="button"
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError('');
+              setFormData({ name: '', email: '', password: '', adminSecret: '' });
+            }}
+            className="toggle-button"
+          >
+            {isLogin
+              ? "Don't have an account? Sign Up"
+              : 'Already have an account? Login'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Auth;
+

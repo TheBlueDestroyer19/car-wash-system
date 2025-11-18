@@ -1,0 +1,170 @@
+.App {
+  font-family: Arial, sans-serif;
+  padding: 1rem;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.app-header h1 {
+  margin: 0;
+  text-align: left;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.logout-button {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+
+.login-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #45a049;
+}
+
+h1 {
+  text-align: center;
+}
+
+.dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.new-token-section,
+.queue-section {
+  margin-bottom: 2rem;
+}
+
+.token-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.token-form input {
+  padding: 0.5rem;
+  flex: 1 1 200px;
+}
+
+.token-form button {
+  padding: 0.5rem 1rem;
+}
+
+.queue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.tile {
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: #222;
+  background: #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tile-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.token-number {
+  font-size: 1.1rem;
+}
+
+.service-bay {
+  font-size: 0.9rem;
+}
+
+.status-label {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+/* Color codes */
+.waiting {
+  background: #fffbea;
+  border-left: 5px solid #f6c453;
+}
+
+.in-service {
+  background: #e6f7ff;
+  border-left: 5px solid #1890ff;
+}
+
+.completed {
+  background: #f6ffed;
+  border-left: 5px solid #52c41a;
+}
+
+.cancelled {
+  background: #fff1f0;
+  border-left: 5px solid #ff4d4f;
+}
+
+.tile-actions button {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+
+.user-note {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.user-note a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.user-note a:hover {
+  text-decoration: underline;
+}
